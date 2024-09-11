@@ -1,6 +1,6 @@
 <script>
-    import { onMount } from 'svelte';
-    import '@fontsource/raleway';
+    import '@fontsource/raleway/400.css';
+    import '@fontsource/raleway/700.css';
 
     export let data;
 
