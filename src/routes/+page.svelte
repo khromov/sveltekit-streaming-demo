@@ -34,7 +34,7 @@
             <nav>
                 <ul>
                     {#await menuItems}
-                        <li>Loading menu items...</li>
+                        <li>Loading menu items<span class="loading-dots"></span></li>
                     {:then items}
                         {#each items as item}
                             <li><a href={item.url}>{item.text}</a></li>
@@ -47,7 +47,7 @@
             <section>
                 <h2>Welcome to StreamCo</h2>
                 {#await mainContent}
-                    <p>Loading content...</p>
+                    <p>Loading content<span class="loading-dots"></span></p>
                 {:then content}
                     {#each content as paragraph}
                         <p>{paragraph}</p>
@@ -63,7 +63,7 @@
         <div class="content-container">
             <p>&copy; 2024 StreamCo. All rights reserved.</p>
             {#await isOpen}
-                <p>Checking if we're open...</p>
+                <p>Checking if we're open<span class="loading-dots"></span></p>
             {:then open}
                 <p class="status">We are currently {open ? 'OPEN' : 'CLOSED'}</p>
             {:catch error}
@@ -131,7 +131,7 @@
 
     .loading-dots::after {
         content: '.';
-        animation: loading-dots 1.5s steps(5, end) infinite;
+        animation: loading-dots 0.8s steps(5, end) infinite;
     }
 
     @keyframes loading-dots {
