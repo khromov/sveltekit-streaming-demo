@@ -17,13 +17,15 @@
     <header>
         <div class="content-container">
             <h1>StreamCo</h1>
-            {#await quote}
-                <p>Loading quote...</p>
-            {:then quote}
-                <p class="quote">{quote}</p>
-            {:catch error}
-                <p class="error">Failed to load quote: {error.message}</p>
-            {/await}
+            <div class="quote-container">
+                {#await quote}
+                    <p class="quote placeholder">Loading inspiring quote...</p>
+                {:then quote}
+                    <p class="quote">{quote}</p>
+                {:catch error}
+                    <p class="quote error">Failed to load quote: {error.message}</p>
+                {/await}
+            </div>
         </div>
     </header>
 
@@ -100,14 +102,31 @@
         padding: 1rem 0;
     }
 
+    header .content-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100px; /* Adjust this value as needed */
+    }
+
     h1 {
         margin: 0;
         font-size: 2.5rem;
     }
 
+    .quote-container {
+        min-height: 3em; /* Adjust this value based on your expected quote length */
+        display: flex;
+        align-items: center;
+    }
+
     .quote {
         font-style: italic;
-        margin-top: 0.5rem;
+        margin: 0.5rem 0 0 0;
+    }
+
+    .quote.placeholder {
+        color: rgba(255, 255, 255, 0.7);
     }
 
     main {
