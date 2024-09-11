@@ -19,7 +19,7 @@
             <h1>StreamCo</h1>
             <div class="quote-container">
                 {#await quote}
-                    <p class="quote placeholder">Loading inspiring quote...</p>
+                    <p class="quote placeholder">Loading inspiring quote<span class="loading-dots"></span></p>
                 {:then quote}
                     <p class="quote">{quote}</p>
                 {:catch error}
@@ -127,6 +127,19 @@
 
     .quote.placeholder {
         color: rgba(255, 255, 255, 0.7);
+    }
+
+    .loading-dots::after {
+        content: '.';
+        animation: loading-dots 1.5s steps(5, end) infinite;
+    }
+
+    @keyframes loading-dots {
+        0%, 20% { content: '.'; }
+        40% { content: '..'; }
+        60% { content: '...'; }
+        80% { content: '..'; }
+        100% { content: '.'; }
     }
 
     main {
