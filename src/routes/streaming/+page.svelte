@@ -28,7 +28,7 @@
         <div class="content-container">
             <div class="header-content">
                 <h1>StreamCo</h1>
-                <div class="stock-price">Stock Price: ${stockPrice}</div>
+                <div class="stock-price">Live Stock Price: ${stockPrice}</div>
             </div>
             <div class="quote-container">
                 {#await quote}
