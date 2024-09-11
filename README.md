@@ -18,3 +18,13 @@ This project demonstrates the streaming capabilities of SvelteKit, showcasing ho
    ```
 
 4. Open your browser and navigate to `http://localhost:5173` (or the port shown in your terminal).
+
+# Streaming Demonstration
+
+To see the streaming in action, you can use cURL to fetch the page content:
+
+```bash
+curl -N -H "Accept: text/html" http://localhost:5173/streaming
+```
+
+This command will show you how different parts of the page are streamed in over time.

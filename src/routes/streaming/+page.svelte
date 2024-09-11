@@ -4,11 +4,13 @@
 
     export let data;
 
+    let isOpen;
+
     $: ({ quote, menuItems, isOpen, mainContent } = data);
 </script>
 
 <svelte:head>
-    <title>SvelteKit Demo (No Streaming)</title>
+    <title>SvelteKit Streaming Demo</title>
 </svelte:head>
 
 <div class="page-wrapper">
@@ -16,7 +18,13 @@
         <div class="content-container">
             <h1>StreamCo</h1>
             <div class="quote-container">
-                <p class="quote">{quote}</p>
+                {#await quote}
+                    <p class="quote placeholder">Loading inspiring quote<span class="loading-dots"></span></p>
+                {:then quote}
+                    <p class="quote">{quote}</p>
+                {:catch error}
+                    <p class="quote error">Failed to load quote: {error.message}</p>
+                {/await}
             </div>
         </div>
     </header>
@@ -25,16 +33,28 @@
         <div class="content-container">
             <nav>
                 <ul>
-                    {#each menuItems as item}
-                        <li><a href={item.url}>{item.text}</a></li>
-                    {/each}
+                    {#await menuItems}
+                        <li>Loading menu items<span class="loading-dots"></span></li>
+                    {:then items}
+                        {#each items as item}
+                            <li><a href={item.url}>{item.text}</a></li>
+                        {/each}
+                    {:catch error}
+                        <li class="error">Failed to load menu items: {error.message}</li>
+                    {/await}
                 </ul>
             </nav>
             <section>
                 <h2>Welcome to StreamCo</h2>
-                {#each mainContent as paragraph}
-                    <p>{paragraph}</p>
-                {/each}
+                {#await mainContent}
+                    <p>Loading content<span class="loading-dots"></span></p>
+                {:then content}
+                    {#each content as paragraph}
+                        <p>{paragraph}</p>
+                    {/each}
+                {:catch error}
+                    <p class="error">Failed to load content: {error.message}</p>
+                {/await}
             </section>
         </div>
     </main>
@@ -42,7 +62,13 @@
     <footer>
         <div class="content-container">
             <p>&copy; 2024 StreamCo. All rights reserved.</p>
-            <p class="status">We are currently {isOpen ? 'OPEN' : 'CLOSED'}</p>
+            {#await isOpen}
+                <p>Checking if we're open<span class="loading-dots"></span></p>
+            {:then open}
+                <p class="status">We are currently {open ? 'OPEN' : 'CLOSED'}</p>
+            {:catch error}
+                <p class="error">Failed to check open status: {error.message}</p>
+            {/await}
         </div>
     </footer>
 </div>
@@ -80,7 +106,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-height: 100px;
+        min-height: 100px; /* Adjust this value as needed */
     }
 
     h1 {
@@ -89,7 +115,7 @@
     }
 
     .quote-container {
-        min-height: 3em;
+        min-height: 3em; /* Adjust this value based on your expected quote length */
         display: flex;
         align-items: center;
     }
@@ -97,6 +123,23 @@
     .quote {
         font-style: italic;
         margin: 0.5rem 0 0 0;
+    }
+
+    .quote.placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .loading-dots::after {
+        content: '.';
+        animation: loading-dots 0.8s steps(5, end) infinite;
+    }
+
+    @keyframes loading-dots {
+        0%, 20% { content: '.'; }
+        40% { content: '..'; }
+        60% { content: '...'; }
+        80% { content: '..'; }
+        100% { content: '.'; }
     }
 
     main {
@@ -146,5 +189,9 @@
 
     .status {
         font-weight: bold;
+    }
+
+    .error {
+        color: red;
     }
 </style>
