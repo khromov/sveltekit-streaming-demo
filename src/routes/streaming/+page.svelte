@@ -1,12 +1,22 @@
 <script>
+    import { onMount } from 'svelte';
     import '@fontsource/raleway/400.css';
     import '@fontsource/raleway/700.css';
 
     export let data;
 
     let isOpen;
+    let stockPrice = '0.00';
 
     $: ({ quote, menuItems, isOpen, mainContent } = data);
+
+    onMount(() => {
+        const eventSource = new EventSource('/stock-price');
+        eventSource.onmessage = (event) => {
+            stockPrice = event.data;
+        };
+        return () => eventSource.close();
+    });
 </script>
 
 <svelte:head>
@@ -16,7 +26,10 @@
 <div class="page-wrapper">
     <header>
         <div class="content-container">
-            <h1>StreamCo</h1>
+            <div class="header-content">
+                <h1>StreamCo</h1>
+                <div class="stock-price">Stock Price: ${stockPrice}</div>
+            </div>
             <div class="quote-container">
                 {#await quote}
                     <p class="quote placeholder">Loading inspiring quote<span class="loading-dots"></span></p>
@@ -106,7 +119,13 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-height: 100px; /* Adjust this value as needed */
+        min-height: 100px;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     h1 {
@@ -114,8 +133,13 @@
         font-size: 2.5rem;
     }
 
+    .stock-price {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
     .quote-container {
-        min-height: 3em; /* Adjust this value based on your expected quote length */
+        min-height: 3em;
         display: flex;
         align-items: center;
     }
@@ -129,17 +153,31 @@
         color: rgba(255, 255, 255, 0.7);
     }
 
-    .loading-dots::after {
-        content: '.';
-        animation: loading-dots 0.8s steps(5, end) infinite;
+    .loading-dots {
+        display: inline-block;
+        width: 3em;
+        height: 1em;
+        overflow: hidden;
+        position: relative;
+        margin-left: 0.2em;
+    }
+
+    .loading-dots::before {
+        content: '......';
+        display: inline-block;
+        white-space: nowrap;
+        animation: loading-dots 1.5s infinite linear;
+        position: absolute;
+        left: -100%;
     }
 
     @keyframes loading-dots {
-        0%, 20% { content: '.'; }
-        40% { content: '..'; }
-        60% { content: '...'; }
-        80% { content: '..'; }
-        100% { content: '.'; }
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(100%);
+        }
     }
 
     main {
