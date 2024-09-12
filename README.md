@@ -2,7 +2,8 @@
 
 This project demonstrates the streaming capabilities of SvelteKit, showcasing how different parts of a web page can be loaded progressively.
 
-![Screenshot 2024-09-11 at 22 05 53](https://github.com/user-attachments/assets/34af541c-d3ae-487a-af65-2324fc167e8c)
+![loading](https://github.com/user-attachments/assets/068b9069-9d66-42cc-bb54-f94c003b977c)
+
 
 ## Getting Started
 
