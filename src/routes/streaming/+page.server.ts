@@ -3,7 +3,7 @@ import { menuItems } from '$lib/menu';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ setHeaders}) => {
     const getQuote = async () => {
         await delay(1000);
         return "The only way to do great work is to love what you do. - Steve Jobs";
@@ -30,6 +30,10 @@ export const load: PageServerLoad = async () => {
             "Join us in shaping the future of data processing. Explore our services and see how StreamCo can transform your business today!"
         ];
     };
+
+    setHeaders({
+        'Access-Control-Allow-Origin': '*'
+    });
 
     return {
         quote: getQuote(),
