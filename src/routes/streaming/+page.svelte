@@ -8,7 +8,7 @@
     let isOpen;
     let stockPrice = '0.00';
 
-    $: ({ quote, menuItems, isOpen, mainContent } = data);
+    $: ({ quote, menuItems, isOpen, mainContent, error } = data);
 
     onMount(() => {
         const eventSource = new EventSource('/stock-price');
@@ -68,7 +68,18 @@
                 {:catch error}
                     <p class="error">Failed to load content: {error.message}</p>
                 {/await}
+
+                <h2>Error Handling</h2>
+                {#await error}
+                    <p>Loading always throws<span class="loading-dots"></span></p>
+                {:then error}
+                    <p class="error">{error?.message}</p>
+                {:catch error}
+                    <p class="error">Failed to load error: {error.message}</p>
+                {/await}
             </section>
+           
+            
         </div>
     </main>
 
