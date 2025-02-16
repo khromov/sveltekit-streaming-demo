@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
     import '@fontsource/raleway/400.css';
     import '@fontsource/raleway/700.css';
 
-    export let data;
+    let { data } = $props();
 
-    $: ({ quote, menuItems, isOpen, mainContent } = data);
+    let { quote, menuItems, isOpen, mainContent } = $derived(data);
 </script>
 
 <svelte:head>

@@ -1,14 +1,12 @@
-<script>
+<script lang="ts">
     import { onMount } from 'svelte';
     import '@fontsource/raleway/400.css';
     import '@fontsource/raleway/700.css';
 
-    export let data;
+    let { data } = $props();
+    let stockPrice = $state('0.00');
 
-    let isOpen;
-    let stockPrice = '0.00';
-
-    $: ({ quote, menuItems, isOpen, mainContent, error } = data);
+    let { quote, menuItems, isOpen, mainContent, error } = $derived(data);
 
     onMount(() => {
         const eventSource = new EventSource('/stock-price');
